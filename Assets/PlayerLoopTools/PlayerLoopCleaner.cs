@@ -71,7 +71,7 @@ namespace PlayerLoopCleaner {
             }
         }
         
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+        //[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         public static void PrintCurrentPlayerLoop() {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("Unity Player Loop");
