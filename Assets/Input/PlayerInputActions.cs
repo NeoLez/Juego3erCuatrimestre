@@ -35,6 +35,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseX"",
+                    ""type"": ""Value"",
+                    ""id"": ""dd27d146-7895-4d0b-a71b-ec9a8e74d3f0"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseY"",
+                    ""type"": ""Value"",
+                    ""id"": ""1e4a5d6e-195f-4aea-80e6-72feb40f52b0"",
+                    ""expectedControlType"": ""Axis"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -147,6 +165,50 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""MoveDir"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""08d94ea9-a5e5-4272-b33b-c74537f3ba1a"",
+                    ""path"": ""<Mouse>/delta/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseX"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2bc1c942-a008-4ac0-bc5f-6d16302e1d1e"",
+                    ""path"": ""<Gamepad>/rightStick/x"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": """",
+                    ""action"": ""MouseX"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d42fdf99-f1c6-46a5-9bf6-b4c6e3ad3064"",
+                    ""path"": ""<Mouse>/delta/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fe9f7859-5499-42e8-af3e-93e91f013151"",
+                    ""path"": ""<Gamepad>/rightStick/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseY"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -156,6 +218,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         // Movement
         m_Movement = asset.FindActionMap("Movement", throwIfNotFound: true);
         m_Movement_MoveDir = m_Movement.FindAction("MoveDir", throwIfNotFound: true);
+        m_Movement_MouseX = m_Movement.FindAction("MouseX", throwIfNotFound: true);
+        m_Movement_MouseY = m_Movement.FindAction("MouseY", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -218,11 +282,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Movement;
     private List<IMovementActions> m_MovementActionsCallbackInterfaces = new List<IMovementActions>();
     private readonly InputAction m_Movement_MoveDir;
+    private readonly InputAction m_Movement_MouseX;
+    private readonly InputAction m_Movement_MouseY;
     public struct MovementActions
     {
         private @PlayerInputActions m_Wrapper;
         public MovementActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @MoveDir => m_Wrapper.m_Movement_MoveDir;
+        public InputAction @MouseX => m_Wrapper.m_Movement_MouseX;
+        public InputAction @MouseY => m_Wrapper.m_Movement_MouseY;
         public InputActionMap Get() { return m_Wrapper.m_Movement; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -235,6 +303,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MoveDir.started += instance.OnMoveDir;
             @MoveDir.performed += instance.OnMoveDir;
             @MoveDir.canceled += instance.OnMoveDir;
+            @MouseX.started += instance.OnMouseX;
+            @MouseX.performed += instance.OnMouseX;
+            @MouseX.canceled += instance.OnMouseX;
+            @MouseY.started += instance.OnMouseY;
+            @MouseY.performed += instance.OnMouseY;
+            @MouseY.canceled += instance.OnMouseY;
         }
 
         private void UnregisterCallbacks(IMovementActions instance)
@@ -242,6 +316,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MoveDir.started -= instance.OnMoveDir;
             @MoveDir.performed -= instance.OnMoveDir;
             @MoveDir.canceled -= instance.OnMoveDir;
+            @MouseX.started -= instance.OnMouseX;
+            @MouseX.performed -= instance.OnMouseX;
+            @MouseX.canceled -= instance.OnMouseX;
+            @MouseY.started -= instance.OnMouseY;
+            @MouseY.performed -= instance.OnMouseY;
+            @MouseY.canceled -= instance.OnMouseY;
         }
 
         public void RemoveCallbacks(IMovementActions instance)
@@ -262,5 +342,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     public interface IMovementActions
     {
         void OnMoveDir(InputAction.CallbackContext context);
+        void OnMouseX(InputAction.CallbackContext context);
+        void OnMouseY(InputAction.CallbackContext context);
     }
 }
